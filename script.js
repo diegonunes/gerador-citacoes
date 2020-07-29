@@ -3,8 +3,22 @@ const textoCitacao = document.getElementById('citacao');
 const autorCitacao = document.getElementById('autor');
 const twitterBotao = document.getElementById('twitter');
 const novaCitacaoBotao = document.getElementById('nova-citacao');
+const loader = document.getElementById('loader');
+
+function loading() {
+  loader.hidden = false;
+  containerCitacao.hidden = true;
+}
+
+function loadingCompleto() {
+  if (!loader.hidden) {
+    containerCitacao.hidden = false;
+    loader.hidden = true;
+  }
+}
 
 async function getCitacao() {
+  loading();
   const proxyUrl = 'https://wise-cors.herokuapp.com/';
   const apiUrl = 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
   try {
@@ -23,6 +37,7 @@ async function getCitacao() {
       textoCitacao.classList.remove('citacao-longa');
     }
     textoCitacao.innerHTML = data.quoteText;
+    loadingCompleto();
   } catch (error) {
     console.log(error);
     getCitacao();
